@@ -159,4 +159,5 @@ dmypy.json
 /logs/*
 !/logs/accuracy.png
 !/logs/loss.png
+!/logs/confusion_matrix.png
 

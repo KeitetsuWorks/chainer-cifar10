@@ -20,6 +20,9 @@ import chainer
 import chainer.links as L
 import chainer.functions as F
 
+import matplotlib.pyplot as plt
+import seaborn as sns
+
 import cifar10_dataset
 import net
 
@@ -49,6 +52,8 @@ class EvalClassificationTask:
             chainer.cuda.get_device(self.gpu).use()
             self.model.to_gpu()
 
+        self.output_dir = output_dir
+
     def run(self):
         n_tests = len(self.dataset)
         print("number of test data: %d" % (n_tests))
@@ -72,6 +77,7 @@ class EvalClassificationTask:
         # 結果を表示
         print("confusion matrix")
         print(confusion_matrix)
+        self.plot_confusion_matrix(confusion_matrix)
         print("# corrests: %d" % (n_acc))
         print("accuracy = %f" % (float(n_acc) / n_tests))
         print("evaluation is complete")
@@ -94,6 +100,22 @@ class EvalClassificationTask:
         result_label = result.data
 
         return label, result_label
+
+    def plot_confusion_matrix(self, cm):
+        sns.heatmap(
+            cm,
+            vmin=0,
+            cmap='Blues',
+            annot=True,
+            fmt="d",
+            square=True,
+            xticklabels=self.dataset.classes,
+            yticklabels=self.dataset.classes,
+        )
+        plt.ylabel("true label")
+        plt.xlabel("predictecd label")
+        cm_file_path = os.path.join(self.output_dir, 'confusion_matrix.png')
+        plt.savefig(cm_file_path, bbox_inches='tight')
 
 
 if __name__ == '__main__':
