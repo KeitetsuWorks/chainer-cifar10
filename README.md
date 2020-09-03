@@ -2,6 +2,15 @@
 
 ## Usage
 
+### Setup
+
+``` bash
+$ pip3 install pipenv
+$ cd /path/to/chainer-cifar10
+$ pipenv install
+$ pipenv shell
+```
+
 ### Training
 
 ``` bash
